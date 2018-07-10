@@ -4,10 +4,11 @@ warning: ex is experimental at this point
 
 Yet another exception library with support for `ex-info`.
 
-`slingshot` is a bit too heavyweight to my taste, `catch-data` is
-quite nice but catches `Throwable` to do the work, and I thought
-leveraging a clojure hierarchy could make sense in that context too (I
-like these lately).
+`slingshot` is a bit too heavyweight to my taste,
+[catch-data](https://github.com/gfredericks/catch-data) is quite nice
+but catches `Throwable` to do the work, and I thought leveraging a
+clojure hierarchy could make sense in that context too (I like these
+lately).
 
 So we have `ex/try+`, which supports vanilla catch/finally clauses.
 
