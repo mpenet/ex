@@ -22,6 +22,8 @@ no match.
 
 ``` clj
 
+(require '[qbits.ex :as ex])
+
 (ex/try+
 
   (something that will throw)
