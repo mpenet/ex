@@ -19,9 +19,10 @@
 (defn- clause?
   [x]
   (and (seq x)
-       (contains? #{'catch 'finally}
-                  (first x))
-       (not= (keyword? (second x)))))
+       (let [c (first x)]
+         (or (= c 'finally)
+             (and (= c 'catch)
+                  (not (keyword? (second x))))))))
 
 (defn- ex-info-clause?
   [x]
@@ -60,6 +61,7 @@
 
   There is no
   "
+  {:style/indent 2}
   [& xs]
   (let [[body _]
         (split-with (complement (some-fn clause? ex-info-clause?))
@@ -68,6 +70,7 @@
         ex-info-clauses (filter ex-info-clause? xs)
         type-sym (gensym "type_")
         data-sym (gensym "data_")]
+    (prn clauses)
     `(try
        ~@body
        ~@(conj clauses
@@ -96,7 +99,10 @@
                       (try (throw e#)
                            ~@clauses))))))))
 
+
 ;; (clojure.pprint/pprint
+;;  ;; do
+
 ;;  (macroexpand-1 '(try+
 ;;                   (prn "body1")
 ;;                   (prn "body2")
