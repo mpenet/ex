@@ -100,11 +100,11 @@
 ;;  (macroexpand-1 '(try+
 ;;                   (prn "body1")
 ;;                   (prn "body2")
-;;                   (catch-ex-info :1 ex1
+;;                   (catch :1 ex1
 ;;                                  (prn :fo1)
 ;;                                  (prn :bar1))
 
-;;                   (catch-ex-info :2 ex2
+;;                   (catch :2 ex2
 ;;                                  (prn :fo2)
 ;;                                  (prn :bar2))
 
