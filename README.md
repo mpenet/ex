@@ -60,19 +60,19 @@ You can also get the full exception instance via the metadata on the
 ex-data we extract, it's under the :qbits.ex/exception key.
 
 
-## Installation
+<!-- ## Installation -->
 
-ex is [available on Clojars](https://clojars.org/cc.qbits/ex).
+<!-- ex is [available on Clojars](https://clojars.org/cc.qbits/ex). -->
 
-Add this to your dependencies:
-
-
-[![Clojars Project](https://img.shields.io/clojars/v/cc.qbits/ex.svg)](https://clojars.org/cc.qbits/ex)
+<!-- Add this to your dependencies: -->
 
 
-Please check the
-[Changelog](https://github.com/mpenet/ex/blob/master/CHANGELOG.md)
-if you are upgrading.
+<!-- [![Clojars Project](https://img.shields.io/clojars/v/cc.qbits/ex.svg)](https://clojars.org/cc.qbits/ex) -->
+
+
+<!-- Please check the -->
+<!-- [Changelog](https://github.com/mpenet/ex/blob/master/CHANGELOG.md) -->
+<!-- if you are upgrading. -->
 
 ## License
 
