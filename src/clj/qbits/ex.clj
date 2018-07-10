@@ -14,8 +14,6 @@
   [tag]
   (clojure.core/ancestors @hierarchy tag))
 
-;; (do hierarchy)
-
 (defn- clause?
   [x]
   (and (seq x)
@@ -70,50 +68,50 @@
         ex-info-clauses (filter ex-info-clause? xs)
         type-sym (gensym "type_")
         data-sym (gensym "data_")]
-    (prn clauses)
     `(try
        ~@body
-       ~@(conj clauses
-               `(catch clojure.lang.ExceptionInfo e#
-                  (let [~data-sym (vary-meta (ex-data e#)
-                                             assoc ::exception e#)
-                        ~type-sym (:type ~data-sym)]
-                    (cond
-                      ;; we need to gen conditions for clauses
-                      ;; twice, once to catch precise types, then
-                      ;; to get potential ancestors in the hierarchy
-                      ~@(concat
-                         ;; first pass we try to catch specific types
-                         (mapcat (fn [[_ type binding & body]]
-                                   [`(= ~type-sym ~type)
-                                    (gen-bindings binding data-sym body)])
-                                 ex-info-clauses)
-                         ;; second pass we try to get potential ancestors
-                         (mapcat (fn [[_ type binding & body]]
-                                   [`(isa? @hierarchy ~type-sym ~type)
-                                    (gen-bindings binding data-sym body)])
-                                 ex-info-clauses))
-                      :else
-                      ;; rethrow ex-info with other clauses since we
-                      ;; have no match
-                      (try (throw e#)
-                           ~@clauses))))))))
+       ~@(cond-> clauses
+           (seq ex-info-clauses)
+           (conj `(catch clojure.lang.ExceptionInfo e#
+                    (let [~data-sym (vary-meta (ex-data e#)
+                                               assoc ::exception e#)
+                          ~type-sym (:type ~data-sym)]
+                      (cond
+                        ;; we need to gen conditions for clauses
+                        ;; twice, once to catch precise types, then
+                        ;; to get potential ancestors in the hierarchy
+                        ~@(concat
+                           ;; first pass we try to catch specific types
+                           (mapcat (fn [[_ type binding & body]]
+                                     [`(= ~type-sym ~type)
+                                      (gen-bindings binding data-sym body)])
+                                   ex-info-clauses)
+                           ;; second pass we try to get potential ancestors
+                           (mapcat (fn [[_ type binding & body]]
+                                     [`(isa? @hierarchy ~type-sym ~type)
+                                      (gen-bindings binding data-sym body)])
+                                   ex-info-clauses))
+                        :else
+                        ;; rethrow ex-info with other clauses since we
+                        ;; have no match
+                        (try (throw e#)
+                             ~@clauses)))))))))
 
 
-;; (clojure.pprint/pprint
-;;  ;; do
+(clojure.pprint/pprint
+ ;; do
 
-;;  (macroexpand-1 '(try+
-;;                   (prn "body1")
-;;                   (prn "body2")
-;;                   (catch :1 ex1
-;;                                  (prn :fo1)
-;;                                  (prn :bar1))
+ (macroexpand-1 '(try+
+                     (prn "body1")
+                     (prn "body2")
+                   ;; (catch :1 ex1
+                   ;;                (prn :fo1)
+                   ;;                (prn :bar1))
 
-;;                   (catch :2 ex2
-;;                                  (prn :fo2)
-;;                                  (prn :bar2))
+                   ;; (catch :2 ex2
+                   ;;                (prn :fo2)
+                   ;;                (prn :bar2))
 
-;;                   (catch Exception e
-;;                     :meh)
-;;                   (finally :final))))
+                   (catch Exception e
+                     :meh)
+                   (finally :final))))
