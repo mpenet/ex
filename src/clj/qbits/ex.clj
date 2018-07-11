@@ -14,19 +14,16 @@
   [tag]
   (clojure.core/ancestors @hierarchy tag))
 
-(defn- clause?
+(defn- catch-clause?
   [x]
   (and (seq x)
-       (let [c (first x)]
-         (or (= c 'finally)
-             (and (= c 'catch)
-                  (not (keyword? (second x))))))))
+       (contains? #{'catch 'finally}
+                  (first x))))
 
-(defn- ex-info-clause?
+(defn- catch-data-clause?
   [x]
   (and (seq? x)
-       (= 'catch (first x))
-       (keyword? (second x))))
+       (= 'catch-data (first x))))
 
 (defn- gen-bindings [x y body]
   `(let [~x ~y]
@@ -61,11 +58,11 @@
   "
   {:style/indent 2}
   [& xs]
-  (let [[body _]
-        (split-with (complement (some-fn clause? ex-info-clause?))
+  (let [[body mixed-clauses]
+        (split-with (complement (some-fn catch-clause? catch-data-clause?))
                     xs)
-        clauses (filter clause? xs)
-        ex-info-clauses (filter ex-info-clause? xs)
+        clauses (filter catch-clause? mixed-clauses)
+        ex-info-clauses (filter catch-data-clause? mixed-clauses)
         type-sym (gensym "type_")
         data-sym (gensym "data_")]
     `(try
@@ -98,20 +95,20 @@
                              ~@clauses)))))))))
 
 
-(clojure.pprint/pprint
- ;; do
+;; (clojure.pprint/pprint
+;;  ;; do
 
- (macroexpand-1 '(try+
-                     (prn "body1")
-                     (prn "body2")
-                   ;; (catch :1 ex1
-                   ;;                (prn :fo1)
-                   ;;                (prn :bar1))
+;;  (macroexpand-1 '(try+
+;;                      (prn "body1")
+;;                      (prn "body2")
+;;                    (catch-data :1 ex1
+;;                                   (prn :fo1)
+;;                                   (prn :bar1))
 
-                   ;; (catch :2 ex2
-                   ;;                (prn :fo2)
-                   ;;                (prn :bar2))
+;;                    (catch-data :2 ex2
+;;                                   (prn :fo2)
+;;                                   (prn :bar2))
 
-                   (catch Exception e
-                     :meh)
-                   (finally :final))))
+;;                    (catch Exception e
+;;                      :meh)
+;;                    (finally :final))))

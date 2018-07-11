@@ -4,15 +4,17 @@ warning: ex is experimental at this point
 
 Yet another exception library with support for `ex-info`.
 
-`slingshot` is a bit too heavyweight to my taste,
-[catch-data](https://github.com/gfredericks/catch-data) is quite nice
-but catches `Throwable` to do the work, and I thought leveraging a
-clojure hierarchy could make sense in that context too (I like these
-lately).
+I thought leveraging a clojure hierarchy could make sense in that
+context too (I like these lately), other than that it's largely
+inspired by [catch-data](https://github.com/gfredericks/catch-data),
+the implementation is slightly different, we dont catch Throable, we
+instead generate a catch clause on clj.ex.info and generate a cond
+that tries to match ex-data with the :type key, which arguably is
+closer to what you (or I?) would write by hand in that case.
 
-So we have `ex/try+`, which supports vanilla catch/finally clauses.
+So we have `ex/try+`, which supports vanilla `catch`/`finally` clauses.
 
-If you specify a `catch` clause with a keyword as first argument
+If you specify a `catch-data` clause with a keyword as first argument
 things get intresting.
 
 We start with the assumption that the ex-data map contains a `:type`
@@ -27,12 +29,13 @@ no match.
 
 (ex/try+
 
-  (something that will throw)
+  (throw (ex-info "Argh" {:type ::bar :foo "a foo"}))
 
-  (catch ::foo data
+  (catch-data ::foo data
     (prn :got-ex-data data))
 
-  (catch ::bar {:as data :keys [foo]}
+  (catch-data ::bar {:as data :keys [foo]}
+    ;; in that case it would hit this one
     (prn :got-ex-data-again foo))
 
   (catch ExceptionInfo e
@@ -54,8 +57,9 @@ Then we have an internal hierarchy, so you can do things like that:
 
 (ex/try+
   (throw (ex-info "I am a bar" {:type ::bar})
-  (catch ::foo d
-    (prn "got a foo with data" d))))
+  (catch-data ::foo d
+    (prn "got a foo with data" d)
+    (prn "Original exception instance is " (-> d meta ::ex/exception))))
 
 ```
 
