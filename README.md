@@ -4,21 +4,21 @@ warning: ex is experimental at this point
 
 Yet another exception library with support for `ex-info`.
 
+So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally` clauses.
+
+If you specify a `catch-data` clause with a keyword as first argument
+things get interesting.
+
 I thought leveraging a clojure hierarchy could make sense in that
 context too (I like these lately), other than that it's largely
 inspired by [catch-data](https://github.com/gfredericks/catch-data),
-the implementation is slightly different, we dont catch Throable, we
-instead generate a catch clause on clj.ex.info and generate a cond
+the implementation is slightly different, we dont catch Throwable, we
+instead generate a catch clause on clj.exinfo and generate a cond
 that tries to match ex-data with the :type key, which arguably is
 closer to what you (or I?) would write by hand in that case.
 
-So we have `ex/try+`, which supports vanilla `catch`/`finally` clauses.
-
-If you specify a `catch-data` clause with a keyword as first argument
-things get intresting.
-
 We start with the assumption that the ex-data map contains a `:type`
-key, as we think it's generally a good practise to do so. That key
+key, as we think it's generally a good practice to do so. That key
 should contain a keyword (namespaced or not) and we should be able to
 match the right clause from it, or just throw the ex-info if there's
 no match.
