@@ -14,16 +14,16 @@
   [tag]
   (clojure.core/ancestors @hierarchy tag))
 
-(defn- find-clause-fn
+(defn find-clause-fn
   [pred]
   (fn [x]
     (and (seq x)
          (pred (first x)))))
 
-(def- catch-clause? (find-clause-fn #{'catch 'finally}))
-(def- catch-data-clause? (find-clause-fn #{'catch-data}))
+(def catch-clause? (find-clause-fn #{'catch 'finally}))
+(def catch-data-clause? (find-clause-fn #{'catch-data}))
 
-(defn- gen-bindings [x y body]
+(defn gen-bindings [x y body]
   `(let [~x ~y]
      ~@body))
 
