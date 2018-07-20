@@ -6,12 +6,18 @@ Yet another exception library with support for `ex-info`.
 
 So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally` clauses.
 
-
-
 If you specify a `catch-data` clause with a keyword as first argument
 things get interesting. We assume you always put a `:type` key in the
 ex-info you want to use with this, and will match it's value to the
-value of the key in the `catch-data` clause
+value of the key in the `catch-data` clause.
+
+Essentially catch-data takes this form:
+
+``` clj
+(catch-data :something m
+   ;; where m is a binding to the ex-data (you can destructure at that level as well)
+   )
+```
 
 But there's a twist.
 
