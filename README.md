@@ -67,6 +67,34 @@ You can also get the full exception instance via the metadata on the
 ex-data we extract, it's under the :qbits.ex/exception key.
 
 
+If you catch :foo and :foo is a potential ancestor of another previous
+catch-data clause, the catch on :foo will prevail and be run. This somewhat is
+similar to how java exceptions work.
+
+So if you have
+
+
+``` clj
+
+(ex/derive ::bar ::foo)
+
+[...]
+
+(catch-data ::foo e [...])
+(catch-data ::bar e [...])
+```
+
+That will expand to a cond with the following checks
+
+``` clj
+(= type ::foo)
+(= type ::bar)
+(isa? type ::foo)
+(isa? type ::bar)
+```
+
+So ::bar will be run and not the isa? ::foo clause.
+
 <!-- ## Installation -->
 
 <!-- ex is [available on Clojars](https://clojars.org/cc.qbits/ex). -->
