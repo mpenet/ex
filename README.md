@@ -95,15 +95,17 @@ That will expand to a cond with the following checks
 
 So ::bar will be run and not the isa? ::foo clause.
 
-<!-- ## Installation -->
+## Installation
 
-<!-- ex is [available on Clojars](https://clojars.org/cc.qbits/ex). -->
+ex is [available on Clojars](https://clojars.org/cc.qbits/ex).
 
-<!-- Add this to your dependencies: -->
+Add this to your dependencies:
 
 
-<!-- [![Clojars Project](https://img.shields.io/clojars/v/cc.qbits/ex.svg)](https://clojars.org/cc.qbits/ex) -->
+[![Clojars Project](https://img.shields.io/clojars/v/cc.qbits/ex.svg)](https://clojars.org/cc.qbits/ex)
 
+
+or you can just grab it via `deps.edn` directly
 
 <!-- Please check the -->
 <!-- [Changelog](https://github.com/mpenet/ex/blob/master/CHANGELOG.md) -->
