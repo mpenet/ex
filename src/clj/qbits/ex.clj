@@ -23,10 +23,6 @@
 (def catch-clause? (find-clause-fn #{'catch 'finally}))
 (def catch-data-clause? (find-clause-fn #{'catch-data}))
 
-(defn gen-bindings [x y body]
-  `(let [~x ~y]
-     ~@body))
-
 (defmacro try+
   "Like try but with support for ex-info/ex-data.
 
@@ -73,8 +69,8 @@
                           ~type-sym (:type ~data-sym)]
                       (cond
                         ~@(mapcat (fn [[_ type binding & body]]
-                                    [`(isa? @hierarchy ~type-sym ~type)
-                                     (gen-bindings binding data-sym body)])
+                                    `[(isa? @hierarchy ~type-sym ~type)
+                                      (let [~binding ~data-sym] ~@body)])
                                   ex-info-clauses)
                         :else
                         ;; rethrow ex-info with other clauses since we
@@ -82,20 +78,20 @@
                         (try (throw e#)
                              ~@clauses)))))))))
 
-;; (clojure.pprint/pprint
-;;  ;; do
+#_(clojure.pprint/pprint
+ ;; do
 
-;;  (macroexpand-1 '(try+
-;;                      (prn "body1")
-;;                      (prn "body2")
-;;                    (catch-data :1 ex1
-;;                                   (prn :fo1)
-;;                                   (prn :bar1))
+ (macroexpand-1 '(try+
+                  (prn "body1")
+                  (prn "body2")
+                  (catch-data :1 ex1
+                              (prn :fo1)
+                              (prn :bar1))
 
-;;                    (catch-data :2 ex2
-;;                                   (prn :fo2)
-;;                                   (prn :bar2))
+                  (catch-data :2 ex2
+                              (prn :fo2)
+                              (prn :bar2))
 
-;;                    (catch Exception e
-;;                      :meh)
-;;                    (finally :final))))
+                  (catch Exception e
+                    :meh)
+                  (finally :final))))
