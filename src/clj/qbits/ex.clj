@@ -61,9 +61,8 @@
                     xs)
         clauses (filter catch-clause? mixed-clauses)
         ex-info-clauses (filter catch-data-clause? mixed-clauses)
-        catch-p clauses
-        type-sym (gensym "type_")
-        data-sym (gensym "data_")]
+        type-sym (gensym "ex-type-")
+        data-sym (gensym "ex-data-")]
     `(try
        ~@body
        ~@(cond-> clauses
@@ -73,26 +72,15 @@
                                                assoc ::exception e#)
                           ~type-sym (:type ~data-sym)]
                       (cond
-                        ;; we need to gen conditions for clauses
-                        ;; twice, once to catch precise types, then
-                        ;; to get potential ancestors in the hierarchy
-                        ~@(concat
-                           ;; first pass we try to catch specific types
-                           (mapcat (fn [[_ type binding & body]]
-                                     [`(= ~type-sym ~type)
-                                      (gen-bindings binding data-sym body)])
-                                   ex-info-clauses)
-                           ;; second pass we try to get potential ancestors
-                           (mapcat (fn [[_ type binding & body]]
-                                     [`(isa? @hierarchy ~type-sym ~type)
-                                      (gen-bindings binding data-sym body)])
-                                   ex-info-clauses))
+                        ~@(mapcat (fn [[_ type binding & body]]
+                                    [`(isa? @hierarchy ~type-sym ~type)
+                                     (gen-bindings binding data-sym body)])
+                                  ex-info-clauses)
                         :else
                         ;; rethrow ex-info with other clauses since we
                         ;; have no match
                         (try (throw e#)
                              ~@clauses)))))))))
-
 
 ;; (clojure.pprint/pprint
 ;;  ;; do

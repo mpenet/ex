@@ -25,8 +25,8 @@ I thought leveraging a clojure hierarchy could make sense in that
 context too (I like these lately), other than that it's largely
 inspired by [catch-data](https://github.com/gfredericks/catch-data),
 the implementation is slightly different, we dont catch Throwable, we
-instead generate a catch clause on clj.exinfo and generate a cond
-that tries to match ex-data with the :type key, which arguably is
+instead generate a catch clause on clj `ex-info` and generate a cond
+that tries to match ex-data with the :type key using, which arguably is
 closer to what you (or I?) would write by hand in that case.
 
 
@@ -54,7 +54,6 @@ closer to what you (or I?) would write by hand in that case.
 
 ```
 
-
 Then we have an internal hierarchy, so you can do things like that:
 
 ``` clj
@@ -73,34 +72,6 @@ Then we have an internal hierarchy, so you can do things like that:
 You can also get the full exception instance via the metadata on the
 ex-data we extract, it's under the :qbits.ex/exception key.
 
-
-If you catch :foo and :foo is a potential ancestor of another previous
-catch-data clause, the catch on :foo will prevail and be run. This somewhat is
-similar to how java exceptions work.
-
-So if you have
-
-
-``` clj
-
-(ex/derive ::bar ::foo)
-
-[...]
-
-(catch-data ::foo e [...])
-(catch-data ::bar e [...])
-```
-
-That will expand to a cond with the following checks
-
-``` clj
-(= type ::foo)
-(= type ::bar)
-(isa? type ::foo)
-(isa? type ::bar)
-```
-
-So ::bar will be run and not the isa? ::foo clause.
 
 ## Installation
 
