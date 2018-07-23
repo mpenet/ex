@@ -1,10 +1,9 @@
 # ex
 
-warning: ex is experimental at this point
+An exception library with support for `ex-info`.
 
-Yet another exception library with support for `ex-info`.
-
-So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally` clauses.
+So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally`
+clauses.
 
 If you specify a `catch-data` clause with a keyword as first argument
 things get interesting. We assume you always put a `:type` key in the
