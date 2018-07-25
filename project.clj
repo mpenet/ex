@@ -1,4 +1,4 @@
-(defproject cc.qbits/ex "0.1.1"
+(defproject cc.qbits/ex "0.1.2"
   :description "Yet another exception catching library"
   :url "https://github.com/mpenet/ex"
   :license {:name "Eclipse Public License"
