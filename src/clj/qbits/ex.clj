@@ -1,5 +1,5 @@
 (ns qbits.ex
-  (:refer-clojure :exclude [derive ancestors]))
+  (:refer-clojure :exclude [derive underive ancestors descendants isa? parents]))
 
 (defonce hierarchy (atom (make-hierarchy)))
 
@@ -9,10 +9,31 @@
   (swap! hierarchy
          clojure.core/derive tag parent))
 
+(defn underive
+  "Like clojure.core/underive but scoped on our ex-info type hierarchy"
+  [tag parent]
+  (swap! hierarchy
+         clojure.core/underive tag parent))
+
 (defn ancestors
   "Like clojure.core/ancestors but scoped on our ex-info type hierarchy"
   [tag]
   (clojure.core/ancestors @hierarchy tag))
+
+(defn descendants
+  "Like clojure.core/descendants but scoped on our ex-info type hierarchy"
+  [tag]
+  (clojure.core/descendants @hierarchy tag))
+
+(defn parents
+  "Like clojure.core/parents but scoped on our ex-info type hierarchy"
+  [tag]
+  (clojure.core/parents @hierarchy tag))
+
+(defn isa?
+  "Like clojure.core/isa? but scoped on our ex-info type hierarchy"
+  [child parent]
+  (clojure.core/isa? @hierarchy child parent))
 
 (defn find-clause-fn
   [pred]
@@ -69,7 +90,7 @@
                           ~type-sym (:type ~data-sym)]
                       (cond
                         ~@(mapcat (fn [[_ type binding & body]]
-                                    `[(isa? @hierarchy ~type-sym ~type)
+                                    `[(isa? ~type-sym ~type)
                                       (let [~binding ~data-sym] ~@body)])
                                   ex-info-clauses)
                         :else
@@ -79,19 +100,19 @@
                              ~@clauses)))))))))
 
 #_(clojure.pprint/pprint
- ;; do
+   ;; do
 
- (macroexpand-1 '(try+
-                  (prn "body1")
-                  (prn "body2")
-                  (catch-data :1 ex1
-                              (prn :fo1)
-                              (prn :bar1))
+   (macroexpand-1 '(try+
+                    (prn "body1")
+                    (prn "body2")
+                    (catch-data :1 ex1
+                                (prn :fo1)
+                                (prn :bar1))
 
-                  (catch-data :2 ex2
-                              (prn :fo2)
-                              (prn :bar2))
+                    (catch-data :2 ex2
+                                (prn :fo2)
+                                (prn :bar2))
 
-                  (catch Exception e
-                    :meh)
-                  (finally :final))))
+                    (catch Exception e
+                      :meh)
+                    (finally :final))))
