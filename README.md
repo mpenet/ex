@@ -1,5 +1,8 @@
 # ex
 
+[![cljdoc badge](https://cljdoc.xyz/badge/cc.qbits/ex)](https://cljdoc.xyz/d/cc.qbits/ex/CURRENT)
+
+
 An exception library with support for `ex-info`.
 
 So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally`
