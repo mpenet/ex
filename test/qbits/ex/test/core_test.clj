@@ -18,6 +18,12 @@
             (catch-data :foo x
               x))))
 
+    (is (true?
+         (ex/try+
+          true
+          (catch-data :foo x
+                      x))))
+
     ;; no match but still ex-info
     (is (= {:type :asdf}
            (ex-data (try-val

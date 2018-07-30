@@ -38,7 +38,7 @@
 (defn find-clause-fn
   [pred]
   (fn [x]
-    (and (seq x)
+    (and (seq? x)
          (pred (first x)))))
 
 (def catch-clause? (find-clause-fn #{'catch 'finally}))
