@@ -98,21 +98,3 @@
                         ;; have no match
                         (try (throw e#)
                              ~@clauses)))))))))
-
-#_(clojure.pprint/pprint
-   ;; do
-
-   (macroexpand-1 '(try+
-                    (prn "body1")
-                    (prn "body2")
-                    (catch-data :1 ex1
-                                (prn :fo1)
-                                (prn :bar1))
-
-                    (catch-data :2 ex2
-                                (prn :fo2)
-                                (prn :bar2))
-
-                    (catch Exception e
-                      :meh)
-                    (finally :final))))
