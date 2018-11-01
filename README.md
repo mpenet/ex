@@ -2,12 +2,12 @@
 
 [![cljdoc badge](https://cljdoc.xyz/badge/cc.qbits/ex)](https://cljdoc.xyz/d/cc.qbits/ex/CURRENT)
 
-
-An exception library with support for `ex-info`.
+An exception library, drop in replacement for `try`/`catch`/`finally`,
+that adds support for `ex-info`/`ex-data` with a custom (clojure)
+hierarchy that allows to express exceptions relations.
 
 So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally`
 clauses.
-
 If you specify a `catch-data` clause with a keyword as first argument
 things get interesting. We assume you always put a `:type` key in the
 ex-info you want to use with this, and will match it's value to the
@@ -21,17 +21,7 @@ Essentially catch-data takes this form:
    )
 ```
 
-But there's a twist.
-
-I thought leveraging a clojure hierarchy could make sense in that
-context too (I like these lately), other than that it's largely
-inspired by [catch-data](https://github.com/gfredericks/catch-data),
-the implementation is slightly different, we dont catch Throwable, we
-instead generate a catch clause on clj `ex-info` and generate a cond
-that tries to match ex-data with the :type key using `isa?` with our
-hierarchy, which arguably is closer to I would write by
-hand in that case.
-
+So you can do things like that.
 
 ``` clj
 
@@ -57,7 +47,13 @@ hand in that case.
 
 ```
 
-Then we have an internal hierarchy, so you can do things like that:
+
+But there's a twist.
+
+I thought leveraging a clojure hierarchy could make sense in that
+context too, so you can essentially create exceptions hierachies
+without having to mess with Java classes directly and in a
+clojuresque" way.
 
 ``` clj
 ;; so bar is a foo
@@ -75,6 +71,23 @@ Then we have an internal hierarchy, so you can do things like that:
 You can also get the full exception instance via the metadata on the
 ex-data we extract, it's under the `:qbits.ex/exception` key.
 
+Some real life examples of usage for this:
+
+* make some exceptions end-user exposable in http responses via an
+  error middleware in a declarative way .
+
+* skip sentry logging for some kind of exceptions (or the inverse)
+
+* make an exception hierachy for our query language type of errors for
+  specialized reporting per "type"
+
+Other than that it's largely inspired by
+[catch-data](https://github.com/gfredericks/catch-data), the
+implementation is slightly different, we dont catch Throwable, we
+instead generate a catch clause on clj `ex-info` and generate a cond
+that tries to match ex-data with the :type key using `isa?` with our
+hierarchy, which arguably is closer to I would write by hand in that
+case.
 
 ## Installation
 
