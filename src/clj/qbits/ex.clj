@@ -67,10 +67,7 @@
     (finally :and-done))
 
   You can specify normal catch clauses for regular java errors and/or
-  finally these are left untouched.
-
-  There is no
-  "
+  finally these are left untouched."
   {:style/indent 2}
   [& xs]
   (let [[body mixed-clauses]
