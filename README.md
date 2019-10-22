@@ -1,5 +1,11 @@
 # ex
 
+## Deprecation notice
+
+**No longer in developement, if you want the same ideas with way better implementation, head to [exoscale/ex](https://github.com/exoscale/ex/)**
+
+
+
 [![cljdoc badge](https://cljdoc.xyz/badge/cc.qbits/ex)](https://cljdoc.xyz/d/cc.qbits/ex/CURRENT)
 
 An exception library, drop in replacement for `try`/`catch`/`finally`,
