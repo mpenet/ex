@@ -1,6 +1,16 @@
 {:deps {org.clojure/clojure {:mvn/version "1.13.0-alpha10"}}
  :paths ["src/clj"]
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"
-                                                          :sha "5fb4fc46ad0bf2e0ce45eba5b9117a2e89166479"}}
-                  :main-opts ["-m" "cognitect.test-runner"]}}}
+ :aliases
+ {:build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.5"}
+                 slipset/deps-deploy {:mvn/version "0.2.2"}}
+          :ns-default build}
+  :test {:extra-paths ["test"]
+         :extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
+         :exec-fn kaocha.runner/exec-fn
+         :exec-args {:kaocha/tests [{:kaocha.testable/type :kaocha.type/clojure.test
+                                     :kaocha.testable/id :unit
+                                     :kaocha/source-paths ["src"]
+                                     :kaocha/test-paths ["test"]
+                                     :kaocha/ns-patterns [".*-test$"]}]
+                     :kaocha/reporter [kaocha.report/dots]
+                     :kaocha/color? true}}}}
