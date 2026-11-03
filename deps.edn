@@ -1,4 +1,4 @@
-{:deps {org.clojure/clojure {:mvn/version "1.9.0"}}
+{:deps {org.clojure/clojure {:mvn/version "1.13.0-alpha10"}}
  :paths ["src/clj"]
  :aliases {:test {:extra-paths ["test"]
                   :extra-deps {com.cognitect/test-runner {:git/url "https://github.com/cognitect-labs/test-runner.git"

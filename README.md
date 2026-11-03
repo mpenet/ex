@@ -1,18 +1,10 @@
 # ex
 
-## Deprecation notice
-
-**No longer in developement, if you want the same ideas with way better implementation, head to [exoscale/ex](https://github.com/exoscale/ex/)**
-
-
-
-[![cljdoc badge](https://cljdoc.xyz/badge/cc.qbits/ex)](https://cljdoc.xyz/d/cc.qbits/ex/CURRENT)
-
 An exception library, drop in replacement for `try`/`catch`/`finally`,
 that adds support for `ex-info`/`ex-data` with a custom (clojure)
 hierarchy that allows to express exceptions relations.
 
-So we have `qbits.ex/try+`, which supports vanilla `catch`/`finally`
+So we have `s-exp.ex/try+`, which supports vanilla `catch`/`finally`
 clauses.
 If you specify a `catch-data` clause with a keyword as first argument
 things get interesting. We assume you always put a `:type` key in the
@@ -31,7 +23,7 @@ So you can do things like that.
 
 ``` clj
 
-(require '[qbits.ex :as ex])
+(require '[s-exp.ex :as ex])
 
 (ex/try+
 
@@ -75,7 +67,7 @@ clojuresque" way.
 ```
 
 You can also get the full exception instance via the metadata on the
-ex-data we extract, it's under the `:qbits.ex/exception` key.
+ex-data we extract, it's under the `:s-exp.ex/exception` key.
 
 Some real life examples of usage for this:
 
@@ -97,12 +89,12 @@ case.
 
 ## Installation
 
-ex is [available on Clojars](https://clojars.org/cc.qbits/ex).
+ex is [available on Clojars](https://clojars.org/cc.s-exp/ex).
 
 Add this to your dependencies:
 
 
-[![Clojars Project](https://img.shields.io/clojars/v/cc.qbits/ex.svg)](https://clojars.org/cc.qbits/ex)
+[![Clojars Project](https://img.shields.io/clojars/v/cc.s-exp/ex.svg)](https://clojars.org/cc.s-exp/ex)
 
 
 or you can just grab it via `deps.edn` directly
