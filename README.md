@@ -29,10 +29,10 @@ So you can do things like that.
 
   (throw (ex-info "Argh" {:type ::bar :foo "a foo"}))
 
-  (catch-data ::foo data
+  (catch ::foo data
     (prn :got-ex-data data))
 
-  (catch-data ::bar {:as data :keys [foo]}
+  (catch ::bar {:as data :keys [foo]}
     ;; in that case it would hit this one
     (prn :got-ex-data-again foo))
 
@@ -60,7 +60,7 @@ clojuresque" way.
 
 (ex/try+
   (throw (ex-info "I am a bar" {:type ::bar})
-  (catch-data ::foo d
+  (catch ::foo d
     (prn "got a foo with data" d)
     (prn "Original exception instance is " (-> d meta ::ex/exception))))
 
@@ -80,7 +80,7 @@ Some real life examples of usage for this:
   specialized reporting per "type"
 
 Other than that it's largely inspired by
-[catch-data](https://github.com/gfredericks/catch-data), the
+[catch](https://github.com/gfredericks/catch-data), the
 implementation is slightly different, we dont catch Throwable, we
 instead generate a catch clause on clj `ex-info` and generate a cond
 that tries to match ex-data with the :type key using `isa?` with our
