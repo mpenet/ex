@@ -1,5 +1,5 @@
-# ex
 
+# ex
 An exception library, drop in replacement for `try`/`catch`/`finally`,
 that adds support for `ex-info`/`ex-data` with a custom (clojure)
 hierarchy that allows to express exceptions relations.
@@ -89,12 +89,12 @@ case.
 
 ## Installation
 
-ex is [available on Clojars](https://clojars.org/cc.s-exp/ex).
+ex is [available on Clojars](https://clojars.org/com.s-exp/ex).
 
 Add this to your dependencies:
 
 
-[![Clojars Project](https://img.shields.io/clojars/v/cc.s-exp/ex.svg)](https://clojars.org/cc.s-exp/ex)
+[![Clojars Project](https://img.shields.io/clojars/v/com.s-exp/ex.svg)](https://clojars.org/com.s-exp/ex)
 
 
 or you can just grab it via `deps.edn` directly
